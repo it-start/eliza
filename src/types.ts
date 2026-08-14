@@ -1,3 +1,5 @@
+import { OntologicalEvaluation, HolyExceptionPayload } from './types/ontological';
+
 export interface ToolCall {
   id: string;
   tool: string;
@@ -15,6 +17,12 @@ export interface ChatMessage {
   channel?: string;
   sender?: string;
   toolCalls?: ToolCall[];
+  ontologicalEvaluation?: OntologicalEvaluation;
+  isHolyException?: boolean;
+  holyException?: HolyExceptionPayload;
+  overrideApplied?: boolean;
+  advisoryWarning?: string;
+  isRejected?: boolean;
 }
 
 export interface Session {

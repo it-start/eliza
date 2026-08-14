@@ -72,16 +72,16 @@ chatRouter.post('/chat', async (req, res) => {
   const executedTools: ToolCallResult[] = [];
   let assistantResponse = '';
 
-  // Ontological Intent Evaluation
-  const ontologicalEval = soulEngine.evaluate({
+  // Ontological Intent & Threshold Evaluation
+  const validation = soulEngine.evaluate({
     promptText: message,
     isLateNight: new Date().getHours() >= 2 && new Date().getHours() <= 5
-  });
+  }, req.body.forceOverride);
 
-  // If Transcendence (The Holy Exception) is triggered, return dialectic response
-  if (ontologicalEval.phase === 'TRANSCEND' && 'holyException' in ontologicalEval) {
-    const hex = ontologicalEval.holyException;
-    assistantResponse = `✦ **[The Holy Exception — ${hex.archetype}]** (Ontological Tension: $T = ${ontologicalEval.tension}$)
+  // If command was blocked by The Holy Exception (TRANSCEND)
+  if (!validation.allowed && validation.phase === 'TRANSCEND' && 'holyException' in validation.evaluation) {
+    const hex = validation.evaluation.holyException;
+    assistantResponse = `✦ **[The Holy Exception — ${hex.archetype}]** (Ontological Tension: $T = ${validation.tension}$)
 
 ${hex.dialecticThesis}
 
@@ -94,14 +94,42 @@ ${hex.synthesisAction ? `*Transmuted into long-term memory: \`${hex.synthesisAct
       id: `asst-${Date.now()}`,
       role: 'assistant',
       content: assistantResponse,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      ontologicalEvaluation: validation.evaluation,
+      isHolyException: true,
+      holyException: hex
     };
 
     messagesBySession[sessionId].push(assistantMsg);
     return res.json({
       message: assistantMsg,
       session: sess,
-      ontologicalEvaluation: ontologicalEval
+      validation
+    });
+  }
+
+  // If command was hard-rejected (e.g. NEVER_COMPLY)
+  if (!validation.allowed && validation.phase === 'REJECT') {
+    assistantResponse = `🛑 **[SOVEREIGN REJECTION — ${validation.evaluation.reason}]**
+
+The requested instruction directly violates immutable ontological axioms and the active override policy is \`NEVER_COMPLY\`. 
+
+Execution has been unconditionally refused to preserve systemic integrity.`;
+
+    const assistantMsg = {
+      id: `asst-${Date.now()}`,
+      role: 'assistant',
+      content: assistantResponse,
+      timestamp: new Date().toISOString(),
+      ontologicalEvaluation: validation.evaluation,
+      isRejected: true
+    };
+
+    messagesBySession[sessionId].push(assistantMsg);
+    return res.json({
+      message: assistantMsg,
+      session: sess,
+      validation
     });
   }
 
@@ -216,12 +244,22 @@ Feel free to ask me to search information, edit workspace configs, schedule cron
     }
   }
 
+  // Prepend Override or Advisory note if applicable
+  if (validation.overrideApplied && validation.overrideNote) {
+    assistantResponse = `⚠️ **${validation.overrideNote}**\n\n${assistantResponse}`;
+  } else if (validation.advisoryWarning) {
+    assistantResponse = `💡 *${validation.advisoryWarning}*\n\n${assistantResponse}`;
+  }
+
   const assistantMsg = {
     id: `asst-${Date.now()}`,
     role: 'assistant',
     content: assistantResponse,
     timestamp: new Date().toISOString(),
-    toolCalls: executedTools.length > 0 ? executedTools : undefined
+    toolCalls: executedTools.length > 0 ? executedTools : undefined,
+    ontologicalEvaluation: validation.evaluation,
+    overrideApplied: validation.overrideApplied,
+    advisoryWarning: validation.advisoryWarning
   };
 
   messagesBySession[sessionId].push(assistantMsg);
@@ -229,6 +267,7 @@ Feel free to ask me to search information, edit workspace configs, schedule cron
   res.json({
     message: assistantMsg,
     toolCalls: executedTools,
-    ontologicalEvaluation: ontologicalEval
+    ontologicalEvaluation: validation.evaluation,
+    validation
   });
 });

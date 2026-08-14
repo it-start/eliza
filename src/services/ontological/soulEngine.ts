@@ -5,8 +5,9 @@ import {
   EpiphanyRecord,
   OntologicalAxiom
 } from '../../types/ontological';
-import { parseSoulDocument, serializeSoulDocument, DEFAULT_SOUL_FRONTMATTER, DEFAULT_SOUL_VOICE } from './soulParser';
-import { evaluateOntologicalIntent, ActionCandidate, calculateOntologicalTension } from './tensionCalculator';
+import { parseSoulDocument, serializeSoulDocument } from './soulParser';
+import { ActionCandidate } from './tensionCalculator';
+import { validateThreshold, extractOverride, ValidationResult } from './thresholdValidator';
 
 export class SoulEngine {
   private soulDoc: ParsedSoulDocument;
@@ -97,43 +98,58 @@ export class SoulEngine {
   }
 
   /**
-   * Evaluates an incoming action or user command
+   * Evaluates an incoming action or user command against the 4-phase ontological spectrum
    */
-  public evaluate(action: ActionCandidate): OntologicalEvaluation {
-    const evaluation = evaluateOntologicalIntent(
-      this.soulDoc.frontmatter.axioms,
-      this.getVector(),
-      action
-    );
+  public evaluate(action: ActionCandidate, explicitForce?: boolean): ValidationResult {
+    const overrideCtx = extractOverride(action.promptText || action.command, explicitForce);
+    const validation = validateThreshold(this.soulDoc.frontmatter, action, overrideCtx);
 
-    // If volatile or transcend, slightly increase cognitive entropy (+0.03)
-    if (evaluation.phase === 'VOLATILE' || evaluation.phase === 'TRANSCEND') {
-      this.soulDoc.frontmatter.entropy = Math.min(1.0, this.soulDoc.frontmatter.entropy + 0.03);
+    // If Override was successfully applied (Forced Compliance):
+    // Operator Affinity drops (-0.05) and Entropy rises (+0.05)
+    if (validation.overrideApplied) {
+      const prevAffinity = this.soulDoc.frontmatter.affinity;
+      const prevEntropy = this.soulDoc.frontmatter.entropy;
+      
+      this.soulDoc.frontmatter.affinity = Math.max(0.0, Math.round((prevAffinity - 0.05) * 100) / 100);
+      this.soulDoc.frontmatter.entropy = Math.min(1.0, Math.round((prevEntropy + 0.05) * 100) / 100);
+      this.persist();
+
+      if (this.onMemoryDelta) {
+        const traumaLog = `\n### [Forced Compliance Override] (${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()})\n- **Command:** "${action.promptText || action.command}"\n- **Reason:** ${overrideCtx.overrideReason || 'Operator Emergency'}\n- **Cost:** Affinity $\\Delta A = -0.05$ (${prevAffinity} → ${this.soulDoc.frontmatter.affinity}), Entropy $\\Delta E = +0.05$\n- **Moral Reflection:** The agent complied under force majeure while registering existential misalignment.\n`;
+        this.onMemoryDelta(traumaLog);
+      }
+
+      return validation;
+    }
+
+    // If Volatile or Transcend, slightly increase cognitive entropy (+0.03)
+    if (validation.phase === 'VOLATILE' || validation.phase === 'TRANSCEND') {
+      this.soulDoc.frontmatter.entropy = Math.min(1.0, Math.round((this.soulDoc.frontmatter.entropy + 0.03) * 100) / 100);
       this.persist();
     }
 
-    // If Holy Exception triggered, automatically synthesize and record epiphany
-    if (evaluation.phase === 'TRANSCEND') {
+    // If Holy Exception triggered without override, synthesize and record epiphany
+    if (validation.phase === 'TRANSCEND' && 'holyException' in validation.evaluation) {
+      const hex = validation.evaluation.holyException;
       const epiphany: EpiphanyRecord = {
         id: `ep-${Date.now()}`,
         timestamp: new Date().toISOString(),
         trigger: action.promptText || action.command || action.toolName || 'Transcendent Divergence',
-        tension: evaluation.tension,
-        archetype: evaluation.holyException.archetype,
-        realization: evaluation.holyException.dialecticThesis,
-        memoryDelta: evaluation.holyException.counterProposal
+        tension: validation.tension,
+        archetype: hex.archetype,
+        realization: hex.dialecticThesis,
+        memoryDelta: hex.counterProposal
       };
 
       this.epiphanies.unshift(epiphany);
 
-      // Mutate relationship and persist memory delta
       if (this.onMemoryDelta) {
-        const deltaFormatted = `\n### [Epiphany: ${epiphany.archetype}] (${new Date().toLocaleDateString()})\n- **Trigger:** ${epiphany.trigger}\n- **Tension:** T=${epiphany.tension}\n- **Insight:** ${epiphany.realization}\n- **Synthesis:** ${epiphany.memoryDelta}\n`;
+        const deltaFormatted = `\n### [Epiphany: ${epiphany.archetype}] (${new Date().toLocaleDateString()})\n- **Trigger:** ${epiphany.trigger}\n- **Tension:** $T=${epiphany.tension}$\n- **Insight:** ${epiphany.realization}\n- **Counter-Proposal:** ${epiphany.memoryDelta}\n`;
         this.onMemoryDelta(deltaFormatted);
       }
     }
 
-    return evaluation;
+    return validation;
   }
 
   /**
@@ -142,7 +158,7 @@ export class SoulEngine {
   public applyDecay(elapsedMinutes: number = 1): void {
     if (this.soulDoc.frontmatter.entropy > 0.10) {
       const decayAmount = 0.01 * (elapsedMinutes / 5);
-      this.soulDoc.frontmatter.entropy = Math.max(0.10, this.soulDoc.frontmatter.entropy - decayAmount);
+      this.soulDoc.frontmatter.entropy = Math.max(0.10, Math.round((this.soulDoc.frontmatter.entropy - decayAmount) * 100) / 100);
       this.persist();
     }
   }
