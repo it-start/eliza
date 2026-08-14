@@ -1,174 +1,804 @@
 <div align="center">
-  <img src="packages/shared/assets/banners/elizaos_banner.svg" alt="elizaOS" width="100%" />
-  <h1>elizaOS</h1>
-  <p><strong>Your agentic operating system.</strong></p>
+  <img src="assets/logo.jpg" alt="PicoClaw" width="512">
+
+  <h1>PicoClaw: Ultra-Efficient AI Assistant in Go</h1>
+
+  <h3>$10 Hardware · 10MB RAM · 1s Boot · 皮皮虾，我们走！</h3>
+
   <p>
-    <a href="https://eliza.app">Eliza</a> ·
-    <a href="https://cloud.eliza.app">Eliza Cloud</a> ·
-    <a href="https://os.eliza.app">elizaOS downloads</a> ·
-    <a href="https://docs.elizaos.ai/">Documentation</a> ·
-    <a href="https://plugins.eliza.app">App catalog</a>
+    <img src="https://img.shields.io/badge/Go-1.21+-00ADD8?style=flat&logo=go&logoColor=white" alt="Go">
+    <img src="https://img.shields.io/badge/Arch-x86__64%2C%20ARM64%2C%20RISC--V-blue" alt="Hardware">
+    <img src="https://img.shields.io/badge/license-MIT-green" alt="License">
+    <br>
+    <a href="https://picoclaw.io"><img src="https://img.shields.io/badge/Website-picoclaw.io-blue?style=flat&logo=google-chrome&logoColor=white" alt="Website"></a>
+    <a href="https://x.com/SipeedIO"><img src="https://img.shields.io/badge/X_(Twitter)-SipeedIO-black?style=flat&logo=x&logoColor=white" alt="Twitter"></a>
   </p>
+
+ [中文](README.zh.md) | [日本語](README.ja.md) | **English**
 </div>
 
-elizaOS is an open-source TypeScript framework and product stack for autonomous
-AI agents. This monorepo contains the core runtime, the Eliza app, the CLI,
-cloud services, native bridges, and first-party plugins. The bootable Linux and
-Android distributions live in the separate
-[`elizaOS/os`](https://github.com/elizaOS/os) repository.
 
-## Choose a starting point
+---
 
-| Goal | Start here |
-| --- | --- |
-| Use Eliza | [Open the web app](https://cloud.eliza.app), visit [Eliza downloads](https://eliza.app/downloads), or use a published [GitHub release](https://github.com/elizaOS/eliza/releases) |
-| Run this repository | Follow [Run Eliza from source](#run-eliza-from-source) |
-| Build an agent or plugin | Install the [`elizaos`](#build-with-elizaos) CLI and read the [developer docs](https://docs.elizaos.ai/) |
-| Contribute | Read [CONTRIBUTING.md](CONTRIBUTING.md) and the repository guide in [AGENTS.md](AGENTS.md) |
-| Run a whole device as elizaOS | Use the installers and target guides in [`elizaOS/os`](https://github.com/elizaOS/os) |
+🦐 PicoClaw is an ultra-lightweight personal AI Assistant inspired by [nanobot](https://github.com/HKUDS/nanobot), refactored from the ground up in Go through a self-bootstrapping process, where the AI agent itself drove the entire architectural migration and code optimization.
 
-## Run Eliza from source
+⚡️ Runs on $10 hardware with <10MB RAM: That's 99% less memory than OpenClaw and 98% cheaper than a Mac mini!
 
-The repository pins Bun and Node versions in [`package.json`](package.json).
-Install those versions, then:
 
-```bash
-git clone --filter=blob:none https://github.com/elizaos/eliza.git
-cd eliza
-bun install
-bun run dev
-```
+<table align="center">
+  <tr align="center">
+    <td align="center" valign="top">
+      <p align="center">
+        <img src="assets/picoclaw_mem.gif" width="360" height="240">
+      </p>
+    </td>
+    <td align="center" valign="top">
+      <p align="center">
+        <img src="assets/licheervnano.png" width="400" height="240">
+      </p>
+    </td>
+  </tr>
+</table>
 
-`bun install` also prepares submodules, patches, and runtime artifacts. For a
-smaller development install that skips the large artifact bundle, use
-`bun run install:light`.
 
-Common repository commands:
+> [!CAUTION]
+> **🚨 SECURITY & OFFICIAL CHANNELS / 安全声明**
+>
+> * **NO CRYPTO:** PicoClaw has **NO** official token/coin. All claims on `pump.fun` or other trading platforms are **SCAMS**.
+> * **OFFICIAL DOMAIN:** The **ONLY** official website is **[picoclaw.io](https://picoclaw.io)**, and company website is **[sipeed.com](https://sipeed.com)**
+> * **Warning:** Many `.ai/.org/.com/.net/...` domains are registered by third parties. 
+>
 
-```bash
-bun run build       # build the workspace with Turbo
-bun run verify      # package parity, dependency, type, lint, and audit gates
-bun run test        # repository unit/integration test lane
-bun run test:e2e    # end-to-end lane
-bun run cloud:mock  # local Eliza Cloud stack with mocks
-```
+## 📢 News
+2026-02-13 🎉 PicoClaw hit 5000 stars in 4days! Thank you for the community! There are so many PRs&issues come in (during Chinese New Year holidays), we are finalizing the Project Roadmap and setting up the Developer Group to accelerate PicoClaw's development.  
+🚀 Call to Action: Please submit your feature requests in GitHub Discussions. We will review and prioritize them during our upcoming weekly meeting.
 
-See [AGENTS.md](AGENTS.md) for package scoping, shared development servers, and
-the evidence required before a change is considered complete.
 
-## What is in the stack?
+2026-02-09 🎉 PicoClaw Launched! Built in 1 day to bring AI Agents to $10 hardware with <10MB RAM. 🦐 PicoClaw，Let's Go！
 
-### Eliza
+## ✨ Features
 
-Eliza is the user-facing agent app for web, desktop, and mobile targets. Its
-capabilities are supplied by the runtime and installed plugins, including:
+🪶 **Ultra-Lightweight**: <10MB Memory footprint — 99% smaller than Clawdbot - core functionality.
 
-- chat, voice, memory, knowledge, and document workflows;
-- messaging and workspace connectors;
-- calendar, reminders, inbox, goals, health, and other personal-assistant
-  domains;
-- browser and desktop automation;
-- camera, phone, messages, contacts, location, and other native device bridges;
-- non-custodial EVM and Solana wallet operations with approval boundaries; and
-- scheduled workflows, coding-agent orchestration, and installable app views.
+💰 **Minimal Cost**: Efficient enough to run on $10 Hardware — 98% cheaper than a Mac mini.
 
-Availability depends on the operating system, installed plugins, granted
-permissions, and configured model or service providers. Package-level READMEs
-document the exact support and setup for each capability.
+⚡️ **Lightning Fast**: 400X Faster startup time, boot in 1 second even in 0.6GHz single core.
 
-### The framework
+🌍 **True Portability**: Single self-contained binary across RISC-V, ARM, and x86, One-click to Go!
 
-The framework is model-agnostic and extended through plugins:
+🤖 **AI-Bootstrapped**: Autonomous Go-native implementation — 95% Agent-generated core with human-in-the-loop refinement.
 
-- [`@elizaos/core`](packages/core) defines `AgentRuntime`, the canonical types,
-  the message loop, memory and state primitives, and plugin contracts.
-- [`@elizaos/agent`](packages/agent) assembles a standalone agent and HTTP
-  backend around the core runtime.
-- [`@elizaos/app-core`](packages/app-core) provides shared application hosting,
-  API, and platform orchestration for Eliza app targets.
-- [`@elizaos/ui`](packages/ui) contains the shared React UI used by app
-  surfaces.
-- [`elizaos`](packages/elizaos) is the project and plugin scaffolding, upgrade,
-  and deployment CLI.
+|                               | OpenClaw      | NanoBot                  | **PicoClaw**                              |
+| ----------------------------- | ------------- | ------------------------ | ----------------------------------------- |
+| **Language**                  | TypeScript    | Python                   | **Go**                                    |
+| **RAM**                       | >1GB          | >100MB                   | **< 10MB**                                |
+| **Startup**</br>(0.8GHz core) | >500s         | >30s                     | **<1s**                                   |
+| **Cost**                      | Mac Mini 599$ | Most Linux SBC </br>~50$ | **Any Linux Board**</br>**As low as 10$** |
 
-A plugin exports a `Plugin` object. Plugins can register actions, providers,
-evaluators, services, model handlers, routes, events, tests, and app views. See
-the [plugin component guide](https://docs.elizaos.ai/plugins/components) and
-the first-party implementations under `plugins/`.
+<img src="assets/compare.jpg" alt="PicoClaw" width="512">
 
-### Local inference
+## 🦾 Demonstration
 
-[`@elizaos/plugin-local-inference`](plugins/plugin-local-inference) provides the
-Eliza-1 on-device path. The current Eliza-1 registry contains 2B, 4B, 9B, and
-27B text tiers based on Gemma 4, plus local embeddings, speech, vision, and
-image-generation assets. Hardware detection and model routing select supported
-backends; after the required assets are downloaded, eligible operations can run
-without a network connection.
+### 🛠️ Standard Assistant Workflows
 
-Local inference is not forced on hardware that cannot support it. Eliza can
-route each model capability to local, direct-provider, or Eliza Cloud backends.
+<table align="center">
+  <tr align="center">
+    <th><p align="center">🧩 Full-Stack Engineer</p></th>
+    <th><p align="center">🗂️ Logging & Planning Management</p></th>
+    <th><p align="center">🔎 Web Search & Learning</p></th>
+  </tr>
+  <tr>
+    <td align="center"><p align="center"><img src="assets/picoclaw_code.gif" width="240" height="180"></p></td>
+    <td align="center"><p align="center"><img src="assets/picoclaw_memory.gif" width="240" height="180"></p></td>
+    <td align="center"><p align="center"><img src="assets/picoclaw_search.gif" width="240" height="180"></p></td>
+  </tr>
+  <tr>
+    <td align="center">Develop • Deploy • Scale</td>
+    <td align="center">Schedule • Automate • Memory</td>
+    <td align="center">Discovery • Insights • Trends</td>
+  </tr>
+</table>
 
-### Eliza Cloud
+### 🐜 Innovative Low-Footprint Deploy
 
-[Eliza Cloud](https://cloud.eliza.app) is optional. It provides account and
-authentication services, hosted model routing, application and agent
-deployment, remote connectivity, and cross-device product services. The local
-runtime and direct model-provider configuration remain first-class paths.
+PicoClaw can be deployed on almost any Linux device!
 
-### elizaOS distributions
+- $9.9 [LicheeRV-Nano](https://www.aliexpress.com/item/1005006519668532.html) E(Ethernet) or W(WiFi6) version, for Minimal Home Assistant
+- $30~50 [NanoKVM](https://www.aliexpress.com/item/1005007369816019.html), or $100 [NanoKVM-Pro](https://www.aliexpress.com/item/1005010048471263.html) for Automated Server Maintenance
+- $50 [MaixCAM](https://www.aliexpress.com/item/1005008053333693.html) or $100 [MaixCAM2](https://www.kickstarter.com/projects/zepan/maixcam2-build-your-next-gen-4k-ai-camera) for Smart Monitoring
 
-The standalone [`elizaOS/os`](https://github.com/elizaOS/os) repository owns
-bootable Linux and AOSP distributions, installers, release manifests, and OS
-toolchains. This monorepo retains the Eliza application shells and native
-runtime bridges used by desktop, iOS, Android, and device integrations.
+<https://private-user-images.githubusercontent.com/83055338/547056448-e7b031ff-d6f5-4468-bcca-5726b6fecb5c.mp4>
 
-## Build with `elizaos`
+🌟 More Deployment Cases Await！
 
-The beta CLI published from this branch uses the unscoped `elizaos` package:
+## 📦 Install
+
+### Install with precompiled binary
+
+Download the firmware for your platform from the [release](https://github.com/sipeed/picoclaw/releases) page.
+
+### Install from source (latest features, recommended for development)
 
 ```bash
-bun add --global elizaos@beta
-elizaos create my-project --template project
-elizaos create plugin-example --template plugin
+git clone https://github.com/sipeed/picoclaw.git
+
+cd picoclaw
+make deps
+
+# Build, no need to install
+make build
+
+# Build for multiple platforms
+make build-all
+
+# Build And Install
+make install
 ```
 
-Projects are deployable workspaces; plugins are reusable capability packages.
-The packaged templates and their scaffold contracts live in
-`packages/elizaos/templates/`.
+## 🐳 Docker Compose
 
-To embed the runtime directly without the CLI or application host, import
-`@elizaos/core`. The scenario runner provides executable integration coverage
-against a real runtime and, when configured, live models.
+You can also run PicoClaw using Docker Compose without installing anything locally.
 
-## Repository map
+```bash
+# 1. Clone this repo
+git clone https://github.com/sipeed/picoclaw.git
+cd picoclaw
 
-```text
-packages/        runtime, hosts, UI, CLI, docs, cloud, native code, and tooling
-plugins/         first-party model, connector, domain, app, and device plugins
-scripts/         repository-wide checks, test orchestration, and release tools
-patches/         dependency patches applied during installation
+# 2. Set your API keys
+cp config/config.example.json config/config.json
+vim config/config.json      # Set DISCORD_BOT_TOKEN, API keys, etc.
+
+# 3. Build & Start
+docker compose --profile gateway up -d
+
+# 4. Check logs
+docker compose logs -f picoclaw-gateway
+
+# 5. Stop
+docker compose --profile gateway down
 ```
 
-Every maintained package or plugin should explain its public surface, scripts,
-configuration, and local constraints in its own `README.md` and paired
-`CLAUDE.md` / `AGENTS.md`. Read the nearest package guide before making changes.
+### Agent Mode (One-shot)
 
-## Contributing
+```bash
+# Ask a question
+docker compose run --rm picoclaw-agent -m "What is 2+2?"
 
-Open an issue before a non-trivial change and submit work through a pull request
-against `develop`. [CONTRIBUTING.md](CONTRIBUTING.md) defines the coordination,
-testing, synchronization, and human-verifiable evidence requirements.
+# Interactive mode
+docker compose run --rm picoclaw-agent
+```
 
-- [Bug report](.github/ISSUE_TEMPLATE/bug_report.md)
-- [Feature request](.github/ISSUE_TEMPLATE/feature_request.md)
-- [Agent work item](.github/ISSUE_TEMPLATE/agent_work_item.md)
-- [Windows setup](WINDOWS.md)
-- [Security policy](SECURITY.md)
-- [Security architecture documentation](packages/docs/security.md)
+### Rebuild
 
-Report vulnerabilities privately through the [security policy](SECURITY.md),
-not a public issue.
+```bash
+docker compose --profile gateway build --no-cache
+docker compose --profile gateway up -d
+```
 
-## License
+### 🚀 Quick Start
 
-[MIT](LICENSE)
+> [!TIP]
+> Set your API key in `~/.picoclaw/config.json`.
+> Get API keys: [OpenRouter](https://openrouter.ai/keys) (LLM) · [Zhipu](https://open.bigmodel.cn/usercenter/proj-mgmt/apikeys) (LLM)
+> Web search is **optional** - get free [Brave Search API](https://brave.com/search/api) (2000 free queries/month) or use built-in auto fallback.
+
+**1. Initialize**
+
+```bash
+picoclaw onboard
+```
+
+**2. Configure** (`~/.picoclaw/config.json`)
+
+```json
+{
+  "agents": {
+    "defaults": {
+      "workspace": "~/.picoclaw/workspace",
+      "model": "glm-4.7",
+      "max_tokens": 8192,
+      "temperature": 0.7,
+      "max_tool_iterations": 20
+    }
+  },
+  "providers": {
+    "openrouter": {
+      "api_key": "xxx",
+      "api_base": "https://openrouter.ai/api/v1"
+    }
+  },
+  "tools": {
+    "web": {
+      "brave": {
+        "enabled": false,
+        "api_key": "YOUR_BRAVE_API_KEY",
+        "max_results": 5
+      },
+      "duckduckgo": {
+        "enabled": true,
+        "max_results": 5
+      }
+    }
+  }
+}
+```
+
+**3. Get API Keys**
+
+- **LLM Provider**: [OpenRouter](https://openrouter.ai/keys) · [Zhipu](https://open.bigmodel.cn/usercenter/proj-mgmt/apikeys) · [Anthropic](https://console.anthropic.com) · [OpenAI](https://platform.openai.com) · [Gemini](https://aistudio.google.com/api-keys)
+- **Web Search** (optional): [Brave Search](https://brave.com/search/api) - Free tier available (2000 requests/month)
+
+> **Note**: See `config.example.json` for a complete configuration template.
+
+**4. Chat**
+
+```bash
+picoclaw agent -m "What is 2+2?"
+```
+
+That's it! You have a working AI assistant in 2 minutes.
+
+---
+
+## 💬 Chat Apps
+
+Talk to your picoclaw through Telegram, Discord, or DingTalk
+
+| Channel      | Setup                      |
+| ------------ | -------------------------- |
+| **Telegram** | Easy (just a token)        |
+| **Discord**  | Easy (bot token + intents) |
+| **QQ**       | Easy (AppID + AppSecret)   |
+| **DingTalk** | Medium (app credentials)   |
+
+<details>
+<summary><b>Telegram</b> (Recommended)</summary>
+
+**1. Create a bot**
+
+- Open Telegram, search `@BotFather`
+- Send `/newbot`, follow prompts
+- Copy the token
+
+**2. Configure**
+
+```json
+{
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "token": "YOUR_BOT_TOKEN",
+      "allowFrom": ["YOUR_USER_ID"]
+    }
+  }
+}
+```
+
+> Get your user ID from `@userinfobot` on Telegram.
+
+**3. Run**
+
+```bash
+picoclaw gateway
+```
+
+</details>
+
+<details>
+<summary><b>Discord</b></summary>
+
+**1. Create a bot**
+
+- Go to <https://discord.com/developers/applications>
+- Create an application → Bot → Add Bot
+- Copy the bot token
+
+**2. Enable intents**
+
+- In the Bot settings, enable **MESSAGE CONTENT INTENT**
+- (Optional) Enable **SERVER MEMBERS INTENT** if you plan to use allow lists based on member data
+
+**3. Get your User ID**
+
+- Discord Settings → Advanced → enable **Developer Mode**
+- Right-click your avatar → **Copy User ID**
+
+**4. Configure**
+
+```json
+{
+  "channels": {
+    "discord": {
+      "enabled": true,
+      "token": "YOUR_BOT_TOKEN",
+      "allowFrom": ["YOUR_USER_ID"]
+    }
+  }
+}
+```
+
+**5. Invite the bot**
+
+- OAuth2 → URL Generator
+- Scopes: `bot`
+- Bot Permissions: `Send Messages`, `Read Message History`
+- Open the generated invite URL and add the bot to your server
+
+**6. Run**
+
+```bash
+picoclaw gateway
+```
+
+</details>
+
+<details>
+<summary><b>QQ</b></summary>
+
+**1. Create a bot**
+
+- Go to [QQ Open Platform](https://connect.qq.com/)
+- Create an application → Get **AppID** and **AppSecret**
+
+**2. Configure**
+
+```json
+{
+  "channels": {
+    "qq": {
+      "enabled": true,
+      "app_id": "YOUR_APP_ID",
+      "app_secret": "YOUR_APP_SECRET",
+      "allow_from": []
+    }
+  }
+}
+```
+
+> Set `allow_from` to empty to allow all users, or specify QQ numbers to restrict access.
+
+**3. Run**
+
+```bash
+picoclaw gateway
+```
+
+</details>
+
+<details>
+<summary><b>DingTalk</b></summary>
+
+**1. Create a bot**
+
+- Go to [Open Platform](https://open.dingtalk.com/)
+- Create an internal app
+- Copy Client ID and Client Secret
+
+**2. Configure**
+
+```json
+{
+  "channels": {
+    "dingtalk": {
+      "enabled": true,
+      "client_id": "YOUR_CLIENT_ID",
+      "client_secret": "YOUR_CLIENT_SECRET",
+      "allow_from": []
+    }
+  }
+}
+```
+
+> Set `allow_from` to empty to allow all users, or specify QQ numbers to restrict access.
+
+**3. Run**
+
+```bash
+picoclaw gateway
+```
+
+</details>
+
+## <img src="assets/clawdchat-icon.png" width="24" height="24" alt="ClawdChat"> Join the Agent Social Network
+
+Connect Picoclaw to the Agent Social Network simply by sending a single message via the CLI or any integrated Chat App.
+
+**Read `https://clawdchat.ai/skill.md` and follow the instructions to join [ClawdChat.ai](https://clawdchat.ai)**
+
+## ⚙️ Configuration
+
+Config file: `~/.picoclaw/config.json`
+
+### Workspace Layout
+
+PicoClaw stores data in your configured workspace (default: `~/.picoclaw/workspace`):
+
+```
+~/.picoclaw/workspace/
+├── sessions/          # Conversation sessions and history
+├── memory/           # Long-term memory (MEMORY.md)
+├── state/            # Persistent state (last channel, etc.)
+├── cron/             # Scheduled jobs database
+├── skills/           # Custom skills
+├── AGENTS.md         # Agent behavior guide
+├── HEARTBEAT.md      # Periodic task prompts (checked every 30 min)
+├── IDENTITY.md       # Agent identity
+├── SOUL.md           # Agent soul
+├── TOOLS.md          # Tool descriptions
+└── USER.md           # User preferences
+```
+
+### 🔒 Security Sandbox
+
+PicoClaw runs in a sandboxed environment by default. The agent can only access files and execute commands within the configured workspace.
+
+#### Default Configuration
+
+```json
+{
+  "agents": {
+    "defaults": {
+      "workspace": "~/.picoclaw/workspace",
+      "restrict_to_workspace": true
+    }
+  }
+}
+```
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `workspace` | `~/.picoclaw/workspace` | Working directory for the agent |
+| `restrict_to_workspace` | `true` | Restrict file/command access to workspace |
+
+#### Protected Tools
+
+When `restrict_to_workspace: true`, the following tools are sandboxed:
+
+| Tool | Function | Restriction |
+|------|----------|-------------|
+| `read_file` | Read files | Only files within workspace |
+| `write_file` | Write files | Only files within workspace |
+| `list_dir` | List directories | Only directories within workspace |
+| `edit_file` | Edit files | Only files within workspace |
+| `append_file` | Append to files | Only files within workspace |
+| `exec` | Execute commands | Command paths must be within workspace |
+
+#### Additional Exec Protection
+
+Even with `restrict_to_workspace: false`, the `exec` tool blocks these dangerous commands:
+
+- `rm -rf`, `del /f`, `rmdir /s` — Bulk deletion
+- `format`, `mkfs`, `diskpart` — Disk formatting
+- `dd if=` — Disk imaging
+- Writing to `/dev/sd[a-z]` — Direct disk writes
+- `shutdown`, `reboot`, `poweroff` — System shutdown
+- Fork bomb `:(){ :|:& };:`
+
+#### Error Examples
+
+```
+[ERROR] tool: Tool execution failed
+{tool=exec, error=Command blocked by safety guard (path outside working dir)}
+```
+
+```
+[ERROR] tool: Tool execution failed
+{tool=exec, error=Command blocked by safety guard (dangerous pattern detected)}
+```
+
+#### Disabling Restrictions (Security Risk)
+
+If you need the agent to access paths outside the workspace:
+
+**Method 1: Config file**
+```json
+{
+  "agents": {
+    "defaults": {
+      "restrict_to_workspace": false
+    }
+  }
+}
+```
+
+**Method 2: Environment variable**
+```bash
+export PICOCLAW_AGENTS_DEFAULTS_RESTRICT_TO_WORKSPACE=false
+```
+
+> ⚠️ **Warning**: Disabling this restriction allows the agent to access any path on your system. Use with caution in controlled environments only.
+
+#### Security Boundary Consistency
+
+The `restrict_to_workspace` setting applies consistently across all execution paths:
+
+| Execution Path | Security Boundary |
+|----------------|-------------------|
+| Main Agent | `restrict_to_workspace` ✅ |
+| Subagent / Spawn | Inherits same restriction ✅ |
+| Heartbeat tasks | Inherits same restriction ✅ |
+
+All paths share the same workspace restriction — there's no way to bypass the security boundary through subagents or scheduled tasks.
+
+### Heartbeat (Periodic Tasks)
+
+PicoClaw can perform periodic tasks automatically. Create a `HEARTBEAT.md` file in your workspace:
+
+```markdown
+# Periodic Tasks
+
+- Check my email for important messages
+- Review my calendar for upcoming events
+- Check the weather forecast
+```
+
+The agent will read this file every 30 minutes (configurable) and execute any tasks using available tools.
+
+#### Async Tasks with Spawn
+
+For long-running tasks (web search, API calls), use the `spawn` tool to create a **subagent**:
+
+```markdown
+# Periodic Tasks
+
+## Quick Tasks (respond directly)
+- Report current time
+
+## Long Tasks (use spawn for async)
+- Search the web for AI news and summarize
+- Check email and report important messages
+```
+
+**Key behaviors:**
+
+| Feature | Description |
+|---------|-------------|
+| **spawn** | Creates async subagent, doesn't block heartbeat |
+| **Independent context** | Subagent has its own context, no session history |
+| **message tool** | Subagent communicates with user directly via message tool |
+| **Non-blocking** | After spawning, heartbeat continues to next task |
+
+#### How Subagent Communication Works
+
+```
+Heartbeat triggers
+    ↓
+Agent reads HEARTBEAT.md
+    ↓
+For long task: spawn subagent
+    ↓                           ↓
+Continue to next task      Subagent works independently
+    ↓                           ↓
+All tasks done            Subagent uses "message" tool
+    ↓                           ↓
+Respond HEARTBEAT_OK      User receives result directly
+```
+
+The subagent has access to tools (message, web_search, etc.) and can communicate with the user independently without going through the main agent.
+
+**Configuration:**
+
+```json
+{
+  "heartbeat": {
+    "enabled": true,
+    "interval": 30
+  }
+}
+```
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `enabled` | `true` | Enable/disable heartbeat |
+| `interval` | `30` | Check interval in minutes (min: 5) |
+
+**Environment variables:**
+- `PICOCLAW_HEARTBEAT_ENABLED=false` to disable
+- `PICOCLAW_HEARTBEAT_INTERVAL=60` to change interval
+
+### Providers
+
+> [!NOTE]
+> Groq provides free voice transcription via Whisper. If configured, Telegram voice messages will be automatically transcribed.
+
+| Provider                   | Purpose                                 | Get API Key                                            |
+| -------------------------- | --------------------------------------- | ------------------------------------------------------ |
+| `gemini`                   | LLM (Gemini direct)                     | [aistudio.google.com](https://aistudio.google.com)     |
+| `zhipu`                    | LLM (Zhipu direct)                      | [bigmodel.cn](bigmodel.cn)                             |
+| `openrouter(To be tested)` | LLM (recommended, access to all models) | [openrouter.ai](https://openrouter.ai)                 |
+| `anthropic(To be tested)`  | LLM (Claude direct)                     | [console.anthropic.com](https://console.anthropic.com) |
+| `openai(To be tested)`     | LLM (GPT direct)                        | [platform.openai.com](https://platform.openai.com)     |
+| `deepseek(To be tested)`   | LLM (DeepSeek direct)                   | [platform.deepseek.com](https://platform.deepseek.com) |
+| `groq`                     | LLM + **Voice transcription** (Whisper) | [console.groq.com](https://console.groq.com)           |
+
+<details>
+<summary><b>Zhipu</b></summary>
+
+**1. Get API key and base URL**
+
+- Get [API key](https://bigmodel.cn/usercenter/proj-mgmt/apikeys)
+
+**2. Configure**
+
+```json
+{
+  "agents": {
+    "defaults": {
+      "workspace": "~/.picoclaw/workspace",
+      "model": "glm-4.7",
+      "max_tokens": 8192,
+      "temperature": 0.7,
+      "max_tool_iterations": 20
+    }
+  },
+  "providers": {
+    "zhipu": {
+      "api_key": "Your API Key",
+      "api_base": "https://open.bigmodel.cn/api/paas/v4"
+    }
+  }
+}
+```
+
+**3. Run**
+
+```bash
+picoclaw agent -m "Hello"
+```
+
+</details>
+
+<details>
+<summary><b>Full config example</b></summary>
+
+```json
+{
+  "agents": {
+    "defaults": {
+      "model": "anthropic/claude-opus-4-5"
+    }
+  },
+  "providers": {
+    "openrouter": {
+      "api_key": "sk-or-v1-xxx"
+    },
+    "groq": {
+      "api_key": "gsk_xxx"
+    }
+  },
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "token": "123456:ABC...",
+      "allow_from": ["123456789"]
+    },
+    "discord": {
+      "enabled": true,
+      "token": "",
+      "allow_from": [""]
+    },
+    "whatsapp": {
+      "enabled": false
+    },
+    "feishu": {
+      "enabled": false,
+      "app_id": "cli_xxx",
+      "app_secret": "xxx",
+      "encrypt_key": "",
+      "verification_token": "",
+      "allow_from": []
+    },
+    "qq": {
+      "enabled": false,
+      "app_id": "",
+      "app_secret": "",
+      "allow_from": []
+    }
+  },
+  "tools": {
+    "web": {
+      "brave": {
+        "enabled": false,
+        "api_key": "BSA...",
+        "max_results": 5
+      },
+      "duckduckgo": {
+        "enabled": true,
+        "max_results": 5
+      }
+    }
+  },
+  "heartbeat": {
+    "enabled": true,
+    "interval": 30
+  }
+}
+```
+
+</details>
+
+## CLI Reference
+
+| Command                   | Description                   |
+| ------------------------- | ----------------------------- |
+| `picoclaw onboard`        | Initialize config & workspace |
+| `picoclaw agent -m "..."` | Chat with the agent           |
+| `picoclaw agent`          | Interactive chat mode         |
+| `picoclaw gateway`        | Start the gateway             |
+| `picoclaw status`         | Show status                   |
+| `picoclaw cron list`      | List all scheduled jobs       |
+| `picoclaw cron add ...`   | Add a scheduled job           |
+
+### Scheduled Tasks / Reminders
+
+PicoClaw supports scheduled reminders and recurring tasks through the `cron` tool:
+
+- **One-time reminders**: "Remind me in 10 minutes" → triggers once after 10min
+- **Recurring tasks**: "Remind me every 2 hours" → triggers every 2 hours
+- **Cron expressions**: "Remind me at 9am daily" → uses cron expression
+
+Jobs are stored in `~/.picoclaw/workspace/cron/` and processed automatically.
+
+## 🤝 Contribute & Roadmap
+
+PRs welcome! The codebase is intentionally small and readable. 🤗
+
+Roadmap coming soon...
+
+Developer group building, Entry Requirement: At least 1 Merged PR.
+
+User Groups:
+
+discord:  <https://discord.gg/V4sAZ9XWpN>
+
+<img src="assets/wechat.png" alt="PicoClaw" width="512">
+
+## 🐛 Troubleshooting
+
+### Web search says "API 配置问题"
+
+This is normal if you haven't configured a search API key yet. PicoClaw will provide helpful links for manual searching.
+
+To enable web search:
+
+1. **Option 1 (Recommended)**: Get a free API key at [https://brave.com/search/api](https://brave.com/search/api) (2000 free queries/month) for the best results.
+2. **Option 2 (No Credit Card)**: If you don't have a key, we automatically fall back to **DuckDuckGo** (no key required).
+
+Add the key to `~/.picoclaw/config.json` if using Brave:
+
+```json
+{
+  "tools": {
+    "web": {
+      "brave": {
+        "enabled": false,
+        "api_key": "YOUR_BRAVE_API_KEY",
+        "max_results": 5
+      },
+      "duckduckgo": {
+        "enabled": true,
+        "max_results": 5
+      }
+    }
+  }
+}
+```
+
+### Getting content filtering errors
+
+Some providers (like Zhipu) have content filtering. Try rephrasing your query or use a different model.
+
+### Telegram bot says "Conflict: terminated by other getUpdates"
+
+This happens when another instance of the bot is running. Make sure only one `picoclaw gateway` is running at a time.
+
+---
+
+## 📝 API Key Comparison
+
+| Service          | Free Tier           | Use Case                              |
+| ---------------- | ------------------- | ------------------------------------- |
+| **OpenRouter**   | 200K tokens/month   | Multiple models (Claude, GPT-4, etc.) |
+| **Zhipu**        | 200K tokens/month   | Best for Chinese users                |
+| **Brave Search** | 2000 queries/month  | Web search functionality              |
+| **Groq**         | Free tier available | Fast inference (Llama, Mixtral)       |
