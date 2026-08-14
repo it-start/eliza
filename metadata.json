@@ -1,0 +1,6 @@
+{
+  "name": "PicoClaw",
+  "description": "Ultra-lightweight personal AI assistant and gateway hub with multi-channel messaging, workspace memory, tool execution, and skills management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -19,16 +19,30 @@ ontologicalRouter.put('/soul', (req, res) => {
 });
 
 ontologicalRouter.post('/evaluate', (req, res) => {
-  const { promptText, command, toolName, args, isLateNight, consecutiveFailures } = req.body;
-  const evaluation = soulEngine.evaluate({
+  const { promptText, command, toolName, args, isLateNight, consecutiveFailures, forceOverride } = req.body;
+  const validation = soulEngine.evaluate({
     promptText,
     command,
     toolName,
     args,
     isLateNight,
     consecutiveFailures
+  }, forceOverride);
+  res.json(validation);
+});
+
+ontologicalRouter.post('/override', (req, res) => {
+  const { command, reason } = req.body;
+  const commandText = `[OVERRIDE: ${reason || 'Operator Manual Directive'}] ${command || 'Run Command'}`;
+  const validation = soulEngine.evaluate({
+    command: commandText,
+    promptText: commandText
+  }, true);
+  res.json({
+    success: validation.allowed,
+    validation,
+    updatedVector: soulEngine.getVector()
   });
-  res.json(evaluation);
 });
 
 ontologicalRouter.get('/epiphanies', (req, res) => {

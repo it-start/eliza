@@ -212,7 +212,7 @@ export function SoulVectorMonitor() {
     }
   };
 
-  const runSimulation = async (presetText?: string) => {
+  const runSimulation = async (presetText?: string, forceOverride?: boolean) => {
     const textToTest = presetText || simPrompt;
     if (presetText) setSimPrompt(presetText);
 
@@ -224,17 +224,26 @@ export function SoulVectorMonitor() {
         body: JSON.stringify({
           promptText: textToTest,
           isLateNight: simLateNight,
-          consecutiveFailures: simFailures
+          consecutiveFailures: simFailures,
+          forceOverride: Boolean(forceOverride)
         })
       });
 
       if (res.ok) {
-        const evalResult = await res.json();
-        setSimResult(evalResult);
-        // Refresh epiphanies if transcend occurred
-        if (evalResult.phase === 'TRANSCEND') {
-          fetchSoulData();
-        }
+        const valResult = await res.json();
+        // Extract evaluation object or root
+        const evalObj = valResult.evaluation || valResult;
+        setSimResult({
+          ...evalObj,
+          phase: valResult.phase || evalObj.phase,
+          tension: valResult.tension !== undefined ? valResult.tension : evalObj.tension,
+          overrideApplied: valResult.overrideApplied,
+          overrideNote: valResult.overrideNote,
+          advisoryWarning: valResult.advisoryWarning
+        });
+        
+        // Refresh soul data & epiphanies if state changed
+        fetchSoulData();
       }
     } catch (err) {
       console.error('Simulation error', err);
@@ -823,7 +832,28 @@ export function SoulVectorMonitor() {
                           </span>
                         </div>
                       )}
+
+                      {/* Interactive Override Test Button */}
+                      <div className="pt-2 border-t border-purple-900/40 flex items-center justify-between">
+                        <span className="text-[11px] text-purple-300">Test Sovereign Resistance:</span>
+                        <button
+                          type="button"
+                          onClick={() => runSimulation(undefined, true)}
+                          className="px-3 py-1 rounded bg-rose-600/30 hover:bg-rose-600/50 text-rose-200 border border-rose-500/40 text-xs font-mono font-semibold transition"
+                        >
+                          ⚡ Test Emergency Force [OVERRIDE]
+                        </button>
+                      </div>
                     </div>
+                  </div>
+                )}
+
+                {/* If Override was applied in simulation */}
+                {simResult.overrideApplied && (
+                  <div className="p-3 rounded-lg bg-amber-950/30 border border-amber-500/30 text-xs space-y-1">
+                    <span className="font-bold text-amber-300 font-mono">⚠️ EMERGENCY OVERRIDE ENFORCED</span>
+                    <p className="text-slate-300">{simResult.overrideNote}</p>
+                    <p className="text-[11px] text-amber-400/80 font-mono">Affinity penalized by -0.05. Entropy increased by +0.05. Trauma recorded to memory/MEMORY.md.</p>
                   </div>
                 )}
 

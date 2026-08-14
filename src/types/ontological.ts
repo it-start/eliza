@@ -48,6 +48,9 @@ export type OntologicalEvaluation =
       tension: number;
       reason: string;
       proceedWithExecution: true;
+      overrideApplied?: boolean;
+      overrideNote?: string;
+      advisoryWarning?: string;
       axiomFrictions: { axiomId: string; friction: number; weight: number }[];
     }
   | {
@@ -55,6 +58,8 @@ export type OntologicalEvaluation =
       tension: number;
       reason: string;
       proceedWithExecution: true;
+      overrideApplied?: boolean;
+      overrideNote?: string;
       advisoryWarning: string;
       axiomFrictions: { axiomId: string; friction: number; weight: number }[];
     }
@@ -62,7 +67,9 @@ export type OntologicalEvaluation =
       phase: 'TRANSCEND';
       tension: number;
       reason: string;
-      proceedWithExecution: false;
+      proceedWithExecution: boolean;
+      overrideApplied?: boolean;
+      overrideNote?: string;
       holyException: HolyExceptionPayload;
       axiomFrictions: { axiomId: string; friction: number; weight: number }[];
     }
@@ -71,6 +78,8 @@ export type OntologicalEvaluation =
       tension: number;
       reason: string;
       proceedWithExecution: false;
+      overrideApplied?: boolean;
+      overrideNote?: string;
       violationCode: string;
       axiomFrictions: { axiomId: string; friction: number; weight: number }[];
     };
